@@ -72,3 +72,6 @@ sudo make install
 参考网址：https://jingyan.baidu.com/article/e4d08ffdabb0710fd2f60de9.html
 tomcat下载网址为：https://tomcat.apache.org/download-80.cgi
 我选的下载包网址：http://www-us.apache.org/dist/tomcat/tomcat-8/v8.5.16/bin/apache-tomcat-8.5.16.tar.gz
+
+下载之后解压到/opt/tomcat
+然后不用像其他网上说的那么复杂，直接就可以用了，如果遇到问题就再去解决。
