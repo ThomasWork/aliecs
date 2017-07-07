@@ -78,3 +78,6 @@ tomcat下载网址为：https://tomcat.apache.org/download-80.cgi
 
 建站网址：
 http://www.banzg.com/archives/category/jianzhan
+
+下载之后解压到/opt/tomcat
+然后不用像其他网上说的那么复杂，直接就可以用了，如果遇到问题就再去解决。
