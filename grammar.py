@@ -60,6 +60,9 @@ nginx http scgi temporary files: "scgi_temp"
 然后
 make
 sudo make install
+sudo /usr/local/nginx/sbin/nginx
+
+
 因为之前已经安装了Apache服务器，所以它占用了80号端口，需要把它卸载了。卸载网址见：http://blog.csdn.net/dazhi_100/article/details/43121179
 
 安装tomcat前需要安装Java，安装网址为：http://www.linuxidc.com/Linux/2016-11/136958.htm
@@ -72,3 +75,6 @@ sudo make install
 参考网址：https://jingyan.baidu.com/article/e4d08ffdabb0710fd2f60de9.html
 tomcat下载网址为：https://tomcat.apache.org/download-80.cgi
 我选的下载包网址：http://www-us.apache.org/dist/tomcat/tomcat-8/v8.5.16/bin/apache-tomcat-8.5.16.tar.gz
+
+建站网址：
+http://www.banzg.com/archives/category/jianzhan
