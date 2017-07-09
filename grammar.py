@@ -143,3 +143,10 @@ https://stackoverflow.com/questions/42543658/wordpress-blank-page-with-nginx
 grant all on wordpress.* to 'wordpress'@'localhost'
 flush privileges;
 然后就可以打开了。
+
+安装FTP服务：
+sudo apt-get install vsftpd
+很多权限没有设置。
+sudo service vsftpd start
+发现已经在运行
+不开放21号端口会等待很长时间，开放之后出现如下错误：could not create directory
