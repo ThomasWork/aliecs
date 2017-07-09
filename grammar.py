@@ -143,3 +143,6 @@ https://stackoverflow.com/questions/42543658/wordpress-blank-page-with-nginx
 grant all on wordpress.* to 'wordpress'@'localhost'
 flush privileges;
 然后就可以打开了。
+
+查看日志的最后10条记录。
+sudo tail -f -n 10 /usr/local/nginx/logs/error.log

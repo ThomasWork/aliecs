@@ -1,0 +1,44 @@
+sudo apt-get install vsftpd
+
+重启服务，发现已经启动了
+sudo service vsftpd restart
+ sudo netstat -apn | grep ftp，可以发现其在21号端口监听。
+
+创建用户以及设置密码：
+sudo useradd -d /home/uftp -s /bin/bash uftp
+sudo passwd uftp
+如果没有创建/home/uftp目录，那么uftp登录时会在/目录。
+
+修改配置文件，路径在/etc/vsftpd.conf
+
+#设置列表中的用户可以登录
+userlist_deny=NO
+userlist_enable=YES
+userlist_file=/etc/ftp_allowed_users
+530问题？？
+seccomp_sandbox=NO
+允许本地用户登录
+local_enable=YES
+然后创建/etc/ftp_allowed_users文件，向其中输入允许的用户，如：
+
+uftp
+zhangsan（自己常用的账户等）。
+
+然后查看ftpusers文件，确定里面没有需要登录的用户。
+sudo cat /etc/ftpusers
+
+重启之后，使用FileZilla连接，登录成功（在Linux系统这一端是可以看到连接建立成功的），但是列出目录失败。
+错误信息如下：
+
+“状态:	服务器发回了不可路由的地址。被动模式失败。”
+解决：编辑->设置->连接->被动模式->选择退回到主动模式即可。
+
+然后发现可以列出目录了，也可以把文件下载到本地，但是不能上传，出现错误“550 Permission denied.”
+write_enable=YES被注释了，取消注释即可。
+“553 Could not create file.”
+原因：当前在FileZilla中选择上传的目标目录是使用常用账户使用sudo创建的，没有权限。
+
+在常用账户下新建一个ftpupload文件夹，然后在FileZilla使用常用账户登录就可以上传了。
+
+下面就可以开始解决WordPress不能上传文件的问题了。
+ls -dl  可以只列出顶层目录的详细信息。
