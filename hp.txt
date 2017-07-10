@@ -1,0 +1,13 @@
+使用下面的命令，将wordpress文件夹的属主改为PHP程序的用户，
+使用ps -aux | grep php可以看到运行PHP的用户。
+sudo chown -R www-data:www-data /var/www/wordpress
+
+上传图片出现Http error，原来是图片尺寸太大了，2000万像素，选个小的，同时不超过2M的就可以了。
+
+剪裁上传的图片时出现问题：
+There has been an error cropping your image.
+原因：缺少PHP GD库。
+Ubuntu下运行：
+sudo add-apt-repository ppa:ondrej/php
+sudo apt-get update
+sudo apt-get install php7.0-gd
