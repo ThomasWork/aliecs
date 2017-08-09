@@ -62,6 +62,15 @@ make
 sudo make install
 sudo /usr/local/nginx/sbin/nginx
 
+nginx -s reload  ：修改配置后重新加载生效
+nginx -s reopen  ：重新打开日志文件
+nginx -t -c /path/to/nginx.conf 测试nginx配置文件是否正确
+
+关闭nginx：
+nginx -s stop  :快速停止nginx
+    quit  ：完整有序的停止nginx
+启动nginx:nginx -c /path/to/nginx.conf
+
 
 因为之前已经安装了Apache服务器，所以它占用了80号端口，需要把它卸载了。卸载网址见：http://blog.csdn.net/dazhi_100/article/details/43121179
 
@@ -76,8 +85,74 @@ sudo /usr/local/nginx/sbin/nginx
 tomcat下载网址为：https://tomcat.apache.org/download-80.cgi
 我选的下载包网址：http://www-us.apache.org/dist/tomcat/tomcat-8/v8.5.16/bin/apache-tomcat-8.5.16.tar.gz
 
+我把tomcat放在了/opt文件夹下了。
+
 建站网址：
 http://www.banzg.com/archives/category/jianzhan
 
 下载之后解压到/opt/tomcat
 然后不用像其他网上说的那么复杂，直接就可以用了，如果遇到问题就再去解决。
+
+将Nginx重定向到tomcat：
+参考网址：http://www.linuxidc.com/Linux/2015-03/115208.htm，只需要改动一句话即可
+
+
+然后就是安装MySQl
+然后就是WordPress：最新网址为：https://wordpress.org/latest.tar.gz
+被我放在了/var/www/html/wordpress
+
+安装PHP，见网址：https://askubuntu.com/questions/705880/how-to-install-php-7
+然后启动服务：sudo service php7.0-fpm start(stop)开启和关闭php服务,restart
+
+设置MYSql密码：
+create database wordpress;
+create user wordpress@localhost;
+SET PASSWORD FOR wordpress@localhost=PASSWORD("123456");
+
+然后将wordpress目录下的配置文件拷贝一份：
+sudo cp wp-config-sample.php wp-config.php
+设置数据库名称，用户名以及密码
+define('DB_NAME', 'wordpress');
+define('DB_USER', 'wordpress');
+define('DB_PASSWORD', '123456');
+
+然后配置nginx，配置完成之后可以使用命令：sudo /usr/local/nginx/sbin/nginx -t -c /usr/local/nginx/conf/nginx.conf 进行检查。
+配置网址参见：http://www.jianshu.com/p/0a847350fa07
+然后重启nginx以及php服务。
+
+然后输入网址：http://47.95.2.25/html/wordpress/index.php
+发生错误，这个时候打开nginx的log文件，定位到最后，可以发现错误原因：connect() to unix:/var/run/php7.0-fpm.sock failed (2: No such file or directory)
+然后使用正确的路径，再次测试，发生如下错误：
+connect() to unix:/var/run/php/php7.0-fpm.sock failed (13: Permission denied)
+打开/etc/php/7.0/fpm/pool.d/www.conf文件，然后取消注释下面三行，如果没有就添加上
+listen.owner = www-data
+listen.group = www-data
+listen.mode = 0660
+然后将当前启动nginx的用户添加到www-data组中。(输入groupmod，然后按三次tab就可以看到用户组，可以发现有一个www-data用户组)
+把自己添加到www-data用户组：sudo adduser thomas www-data，然后发现不行，使用ps -aux | grep nginx 发现worker进程的用户是nobody，所以把它也添加到www-data用户组中。
+然后重启nginx，发现可以访问了。但是界面上一片空白。
+
+下面将打开wordpress的debug模式：
+在wp-config.php中，打开：define('WP_DEBUG', false);
+
+参考该网址进行设置：
+https://stackoverflow.com/questions/42543658/wordpress-blank-page-with-nginx
+
+
+"Can’t select database"
+grant all on wordpress.* to 'wordpress'@'localhost'
+flush privileges;
+然后就可以打开了。
+
+
+安装FTP服务：
+sudo apt-get install vsftpd
+很多权限没有设置。
+sudo service vsftpd start
+发现已经在运行
+不开放21号端口会等待很长时间，开放之后出现如下错误：could not create directory
+
+
+查看日志的最后10条记录。
+sudo tail -f -n 10 /usr/local/nginx/logs/error.log
+
